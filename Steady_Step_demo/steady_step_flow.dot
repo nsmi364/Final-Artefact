@@ -1,0 +1,47 @@
+digraph SteadyStep {
+  graph [rankdir=TB, bgcolor="#F8F5EE", fontname="Helvetica", nodesep=0.45, ranksep=0.42, pad=0.4,
+         label=<<b>Steady Step: how a learner moves from data to support</b><br/><font point-size="11" color="#6B6F80">The tool suggests. A human adviser makes the final decision.</font>>,
+         labelloc=t, fontsize=18];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#2F9E7B",
+         fillcolor="#FFFDF9", penwidth=1.4, margin="0.18,0.1"];
+  edge  [fontname="Helvetica", fontsize=10, color="#252A47", penwidth=1.2, fontcolor="#252A47"];
+
+  data   [label="Synthetic dataset\n7 CSV tables (teaching-team structure)", fillcolor="#FFF4D6", color="#C9A227"];
+  cut    [label="Keep only data up to day 21\n(end of Week 3 checkpoint)\nno outcomes, no later data"];
+  ind    [label=<<b>3 indicators</b><br/>① Low Canvas activity (bottom 25% of course)<br/>② First quiz late or missing<br/>③ Registered late (after day 0)>];
+  rule   [label="2 or more\nindicators?", shape=diamond, style=filled, fillcolor="#252A47", color="#252A47", fontcolor="white", fontsize=11];
+
+  ok     [label="0 → On track\n1 → Keep an eye on", fillcolor="#E3F4EC"];
+  sugg   [label="Suggested check-in\n+ plain-language reasons", fillcolor="#FDEBDD", color="#F2884B"];
+
+  adv    [label=<<b>Adviser reviews</b><br/>reasons + learner detail>, fillcolor="#2F9E7B", color="#2F9E7B", fontcolor="white"];
+  dec    [label="Adviser\ndecision", shape=diamond, style=filled, fillcolor="#252A47", color="#252A47", fontcolor="white", fontsize=11];
+
+  contact [label="Contact learner"];
+  monitor [label="Monitor\nre-check at next checkpoint"];
+  none    [label="No action\n(flag not needed)"];
+
+  stu    [label="Student sees own progress\nand gentle reasons only", fillcolor="#E3F4EC"];
+  invite [label="Student sees:\n\"Your adviser would like to check in\"", fillcolor="#E3F4EC"];
+  book   [label="Student books a conversation\n→ booking confirmed", fillcolor="#E3F4EC"];
+
+  fair   [label=<<b>Fairness check</b><br/>flag rate by group vs overall<br/>gap &gt; 10 points → team reviews rule<br/><font point-size="10" color="#6B6F80">protected attributes used ONLY here</font>>,
+          fillcolor="#FFFDF9", color="#E06666", style="rounded,filled,dashed"];
+  ci     [label=<<b>Weekly check-in</b> (student, optional)<br/>3 questions, 1–5<br/><font point-size="10" color="#6B6F80">self-report, NOT used in the flag</font>>,
+          color="#9DA1BC", style="rounded,filled,dashed"];
+
+  data -> cut -> ind -> rule;
+  rule -> sugg [label="  yes"];
+  rule -> ok   [label="  no"];
+  ok -> stu;
+  sugg -> adv -> dec;
+  dec -> contact; dec -> monitor; dec -> none;
+  contact -> invite -> book;
+  monitor -> stu; none -> stu;
+  sugg -> fair [style=dashed, color="#E06666", label=" all flags", fontcolor="#E06666"];
+  ci -> book [style=dashed, color="#9DA1BC", label=" low score →\n Find support", fontcolor="#6B6F80"];
+
+  {rank=same; ok; sugg}
+  {rank=same; adv; fair}
+  {rank=same; stu; invite}
+}

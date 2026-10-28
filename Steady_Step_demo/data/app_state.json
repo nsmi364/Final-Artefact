@@ -1,0 +1,33 @@
+{
+  "bookings": [
+    {
+      "learner_id": "L0001",
+      "adviser": "Mia Chen",
+      "date": "2026-10-29",
+      "time": "10:00",
+      "note": "me",
+      "status": "Confirmed"
+    },
+    {
+      "learner_id": "L0001",
+      "adviser": "Jordan Williams",
+      "date": "2026-10-29",
+      "time": "10:00",
+      "note": "i love me",
+      "status": "Confirmed"
+    }
+  ],
+  "decisions": {},
+  "checkins": [
+    {
+      "learner_id": "L0001",
+      "date": "2026-10-28",
+      "classes": 5,
+      "feeling": 4,
+      "confidence": 3,
+      "average": 4.0,
+      "result": "Keep going",
+      "note": ""
+    }
+  ]
+}

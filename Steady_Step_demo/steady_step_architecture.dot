@@ -1,0 +1,32 @@
+// Steady Step architecture. Edit, then run:  dot -Tpng -Gdpi=160 steady_step_architecture.dot -o steady_step_architecture.png
+digraph Arch {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", nodesep=0.55, ranksep=0.85, pad=0.3,
+         label=<<b>Steady Step - system architecture</b>>, labelloc=t, fontsize=18, fontcolor="#2E4A62"];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#2E4A62",
+         fillcolor="#D6ECF3", penwidth=1.3, margin="0.2,0.12"];
+  edge  [fontname="Helvetica", fontsize=10, color="#2E4A62", fontcolor="#2E4A62", penwidth=1.3];
+
+  student [label="Student", shape=circle, fillcolor="#F59B78", color="#F26B3A", fixedsize=true, width=1.1];
+  adviser [label="Adviser", shape=circle, fillcolor="#F59B78", color="#F26B3A", fixedsize=true, width=1.1];
+
+  subgraph cluster_app { label="Streamlit app (all processing happens here)";
+                         style="rounded,dashed"; color="#2E4A62"; fontcolor="#2E4A62"; fontsize=11; labelloc=t; labeljust=r;
+    ui    [label=<<b>Interface</b><br/>app.py + ui.py<br/>student pages · adviser pages>, fillcolor="#FFFFFF"];
+    logic [label=<<b>Decision logic</b><br/>rules.py<br/>data &le; day 21 &rarr; 3 indicators<br/>2+ = flag + plain reasons>, fillcolor="#2E4A62", fontcolor="white"];
+    fair  [label=<<b>Fairness check</b><br/>fairness.py<br/>flag rate by group (&plusmn;10 pts)>];
+    book  [label=<<b>Check-in + booking</b><br/>average &le; 2.5 &rarr; suggest adviser<br/>no double booking>];
+  }
+  data  [label=<<b>Data source</b><br/>7 synthetic CSVs<br/>(generate_data.py)>, shape=cylinder, fillcolor="#FFF1E8", color="#F26B3A"];
+  store [label=<<b>Saved state</b><br/>app_state.json<br/>bookings · decisions · check-ins>, shape=cylinder, fillcolor="#FFF1E8", color="#F26B3A"];
+
+  student -> ui  [label="check-in answers,\nbooking request"];
+  adviser -> ui  [label="decision:\ncontact / monitor / none"];
+  data  -> logic [xlabel="activity, quiz,\nregistration rows"];
+  ui    -> logic [label="learner selected,\nrule settings"];
+  logic -> fair  [label="flags"];
+  ui    -> book  [label="answers,\nadviser + time"];
+  book  -> store [label="save"];
+  ui    -> store [label="save decision"];
+  logic -> ui    [label="status + reasons", constraint=false, style=dashed];
+  fair  -> ui    [label="group gaps", constraint=false, style=dashed];
+}
