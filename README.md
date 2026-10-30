@@ -26,6 +26,5 @@ Data is built automatically on first run. Tests: `pip install pytest`, then `pyt
 | app.py | Side menu - Student: Overview, Weekly check-in (3 questions, 1-5), My progress, Find support (book an adviser + confirmation). Adviser: Learners to check in with (review + decide), Fairness check, How it works (diagram, rule, test results, reset demo data) |
 | ui.py | Look and feel only (Report 2 style: navy side menu, cream cards, green headings) |
 | steady_step_architecture.png / .dot | Architecture diagram (edit the .dot, then run `dot -Tpng`) |
-| AI_use_log.md | AI-use record (fill in the [TO CONFIRM] items) |
 
 **Before presenting:** open How it works → *Reset demo data* so no old bookings or decisions show.
